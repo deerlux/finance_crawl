@@ -57,7 +57,7 @@ class InstrumentCrawler:
                     item[x] = None
             self.data_dicts.append(item)
     
-    def date2db(self, curr_date):        
+    def data2db(self, curr_date):        
         for item_dict in self.data_dicts:
             item = self.db.Instrument()
             for k,v in item_dict.iteritems():
@@ -84,7 +84,7 @@ class InstrumentCrawler:
                 continue
 
             self.parse_xml()
-            self.date2db(curr_date)
+            self.data2db(curr_date)
             logging.info('[INFO] data is saved to database')
 
 

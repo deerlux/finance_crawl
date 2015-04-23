@@ -1,3 +1,6 @@
+#!/usr/bin/env python2
+from __future__ import unicode_literals, print_function
+
 import sh
 import datetime
 
@@ -5,7 +8,7 @@ from lxq_misc import is_weekend
 
 if __name__ == '__main__':
     baseurl = 'http://www.sse.com.cn/market/dealingdata/overview/margin/a/'
-    startdate = datetime.date(2015,3,10)
+    startdate = datetime.date(2014,1,1)
     enddate = datetime.date(2015,3,20)
 
     curr_date = startdate - datetime.timedelta(1)
@@ -19,6 +22,6 @@ if __name__ == '__main__':
         try:
             sh.wget(urlget)
         except Exception as e:
-            print(e)
+            print(e.message)
             
     sh.mv('*.xls', 'data/')

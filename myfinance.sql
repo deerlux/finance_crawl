@@ -15,16 +15,22 @@ CREATE TABLE if not exists INSTRUMENT (
 create table if not exists RONGZI(
     data_id serial primary key,
     trading_day date,
+    market char(4),
     rongzi_yue float,
     rongzi_mairu float,
     rongquan_yuliang float,
     rongquan_yuliang_jine float,
     rongquan_maichu float);
 
+create table if not exists stock_info(
+    stock_code varchar(8) primary key,
+    stock_name varchar(32));
+
 create table if not exists RONGZI_MINGXI (
     data_id serial primary key,
     trading_day date,
-    zhengquan_code varchar(8),
+    market varchar(4),
+    stock_code varchar(8) references stock_info(stock_code),
     rongzi_yue float,
     rongzi_mairu float,
     rongzi_changhuan float,

@@ -1,0 +1,12 @@
+抓取股指期货相关的数据
+抓取新开户数相关的数据
+
+新开户数据：
+js_s = xpath('//script/@src').extract()
+for k, v in enumerate(js_s):
+    if k< len(js_s)-2:
+        js = requests.get(urlbase + v).content
+        with open(os.path.basename(js.url), 'wb') as f:
+            f.write(js)
+search function query in the js files.
+
