@@ -1,8 +1,9 @@
 #!/usr/bin/env python2
 from __future__ import unicode_literals, print_function
 
-import sh
+
 import datetime
+import requests
 
 from lxq_misc import is_weekend
 

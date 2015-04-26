@@ -41,4 +41,13 @@ create table if not exists RONGZI_MINGXI (
 create index rongzi_trading_day_idx on rongzi(trading_day);
 create index rongzi_mingxi_trading_day_idx on rongzi_mingxi(trading_day);
 
+create table if not exists holiday_type(
+    type_id serial primary key,
+    type_name  varchar(16)
+);
 
+
+create table if not exists holidays(
+    holiday_date date primary key,
+    holiday_type_id int references holiday_type(type_id)
+);

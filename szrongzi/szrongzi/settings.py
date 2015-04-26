@@ -7,7 +7,8 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
-
+from datetime import date
+from scrapy import log
 
 BOT_NAME = 'szrongzi'
 
@@ -17,6 +18,8 @@ NEWSPIDER_MODULE = 'szrongzi.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'szrongzi (+http://www.yourdomain.com)'
 
-START_DATE = '2014-01-01'
-END_DATE = '2015-03-20'
+START_DATE = date(2015,1,1)
+END_DATE = date(2015,4,20)
 
+LOG_LEVEL = log.INFO
+LOG_FILE = "rongzi_crawl.log"

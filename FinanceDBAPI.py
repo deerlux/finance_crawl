@@ -2,7 +2,7 @@ from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
 from sqlalchemy.orm import Session
 
-from singleton import singleton
+from lxq_misc import singleton
 
 @singleton
 class FinanceDB:
@@ -20,6 +20,8 @@ class FinanceDB:
         self.Rongzi = self.Base.classes.rongzi
         self.Rongzi_mingxi = self.Base.classes.rongzi_mingxi
         self.Stock_info = self.Base.classes.stock_info
+        self.Holiday_type = self.Base.classes.holiday_type
+        self.Holidays = self.Base.classes.holidays
 
         self.query = self.session.query
         self.add = self.session.add
