@@ -12,6 +12,8 @@ CREATE TABLE if not exists INSTRUMENT (
     volume float,
     turnover float);
 
+alter table instrument add unique(instrument_id, trading_day);
+
 create table if not exists RONGZI(
     data_id serial primary key,
     trading_day date,
@@ -21,6 +23,8 @@ create table if not exists RONGZI(
     rongquan_yuliang float,
     rongquan_yuliang_jine float,
     rongquan_maichu float);
+
+alter table RONGZI add unique(trading_day, market);
 
 create table if not exists stock_info(
     stock_code varchar(8) primary key,
@@ -37,6 +41,8 @@ create table if not exists RONGZI_MINGXI (
     rongquan_yuliang float,
     rongquan_maichu float,
     rongquan_changhuan float);
+
+alter table RONGZI_MINGXI add unique (trading_day, stock_code);
 
 create index rongzi_trading_day_idx on rongzi(trading_day);
 create index rongzi_mingxi_trading_day_idx on rongzi_mingxi(trading_day);

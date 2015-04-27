@@ -18,8 +18,12 @@ NEWSPIDER_MODULE = 'szrongzi.spiders'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'szrongzi (+http://www.yourdomain.com)'
 
-START_DATE = date(2015,1,1)
+START_DATE = date(2015,4,20)
 END_DATE = date(2015,4,20)
 
-LOG_LEVEL = log.INFO
+LOG_LEVEL = log.WARNING
 LOG_FILE = "rongzi_crawl.log"
+
+ITEM_PIPELINES = {"szrongzi.pipelines.ShrongziPipeline":200,
+    "szrongzi.pipelines.ShrongziMingxiPipeline":300}
+
