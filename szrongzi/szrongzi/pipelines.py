@@ -10,6 +10,8 @@ from scrapy import log
 from szrongzi.items import ShrongziItem, ShrongziMingxiItem
 from finance_crawl.FinanceDBAPI import FinanceDB
 
+from sqlalchemy.exc import IntegrityError
+
 class SzrongziPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -20,17 +22,19 @@ class ShrongziPipeline(object):
             return item
         
         db = FinanceDB()
-        db_item = db.Rongzi(trading_day = item["item.trading_day"],
-                            market = item["item.market"],
-                            rongzi_yue = item["item.rongzi_yue"],
-                            rongzi_mairu = item["item.rongzi_mairu"],
-                            rongquan_yuliang = item["item.rongquan_yuliang"],
-                            rongquan_yuliang_jine = item["item.rongquan_yuliang_jine"],
-                            rongquan_maichu = item["item.rongquan_maichu"])
+        db_item = db.Rongzi(trading_day = item["trading_day"],
+                            market = item["market"],
+                            rongzi_yue = item["rongzi_yue"],
+                            rongzi_mairu = item["rongzi_mairu"],
+                            rongquan_yuliang = item["rongquan_yuliang"],
+                            rongquan_yuliang_jine = item["rongquan_yuliang_jine"],
+                            rongquan_maichu = item["rongquan_maichu"])
         db.add(db_item)
         try:
             db.commit()
-        except Exception as e:
+            log.msg("Shanghai market Rongzi data of {0} is added to database.".format(item["trading_day"].strftime("%Y%m%d")), 
+                    log.INFO)
+        except IntegrityError as e:
             db.rollback()
             log.msg(e, log.ERROR)
 
@@ -63,7 +67,8 @@ class ShrongziMingxiPipeline(object):
         try:
             db.add(db_item)
             db.commit()
-        except Exception as e:
+        except IntegrityError as e:
+            db.rollback()
             log.msg(e, log.ERROR)
 
         return item
