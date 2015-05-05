@@ -10,7 +10,8 @@ CREATE TABLE if not exists INSTRUMENT (
     presettlement_price float,
     settlement_price float,
     volume float,
-    turnover float);
+    turnover float,
+    UNIQUE (instrument_id, trading_day));
 
 alter table instrument add unique(instrument_id, trading_day);
 
@@ -22,7 +23,12 @@ create table if not exists RONGZI(
     rongzi_mairu float,
     rongquan_yuliang float,
     rongquan_yuliang_jine float,
-    rongquan_maichu float);
+    rongquan_maichu float,
+    UNIQUE (trading_day, market));
+
+create table if not exists stock_info(
+    stock_code varchar(8) primary key,
+    stock_name varchar(32));
 
 alter table RONGZI add unique(trading_day, market);
 
@@ -40,7 +46,8 @@ create table if not exists RONGZI_MINGXI (
     rongzi_changhuan float,
     rongquan_yuliang float,
     rongquan_maichu float,
-    rongquan_changhuan float);
+    rongquan_changhuan float,
+    UNIQUE (trading_day, stock_code));
 
 alter table RONGZI_MINGXI add unique (trading_day, stock_code);
 
@@ -52,8 +59,9 @@ create table if not exists holiday_type(
     type_name  varchar(16)
 );
 
-
 create table if not exists holidays(
-    holiday_date date primary key,
-    holiday_type_id int references holiday_type(type_id)
-);
+    holiday_id bigserial primary key,
+    holiday date unique,
+    type_id int references holiday_type(type_id));
+
+

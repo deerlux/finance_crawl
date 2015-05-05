@@ -9,9 +9,10 @@ import lxml.etree as ET
 import datetime
 
 from FinanceDBAPI import FinanceDB
+from sqlalchemy.exc import IntegrityError
 
 from lxq_misc import is_weekend
-import logging, re
+import logging, os, re
 
 class InstrumentCrawler:
     
@@ -64,21 +65,34 @@ class InstrumentCrawler:
                 exec('item.'+k + '= v')
             item.trading_day = curr_date
             self.db.add(item)
-
-        self.db.commit()
-    
+        try:
+            self.db.commit()
+        except IntegrityError as e:
+            logging.warn(e)
 
     def crawl_data(self, startdate, 
         enddate = datetime.datetime.now().date() - datetime.timedelta(1)):
+        
         curr_date = startdate - datetime.timedelta(1)
         
+        holidays = [x[0] for x in self.db.query(self.db.Holidays.holiday).all()]
+
         while enddate > curr_date:
             curr_date = curr_date + datetime.timedelta(1)
-            if is_weekend(curr_date):
+            if is_weekend(curr_date) or (curr_date in holidays):
                 continue
-            urlget = self.urlbase + curr_date.strftime('%Y%m/%d/index.xml')
-            logging.info('[INFO] crawling: ' + urlget)
-            self.xml_str = requests.get(urlget).content
+            
+            filename = curr_date.strftime('data/xml/%Y%m%d-instrument.xml')
+
+            if not os.path.exists(filename):
+                urlget = self.urlbase + curr_date.strftime('%Y%m/%d/index.xml')
+                logging.info('[INFO] crawling: ' + urlget)
+                self.xml_str = requests.get(urlget).content
+                with open(filename,'w') as f:
+                    f.write(self.xml_str)
+            else:
+                with open(filename) as f:
+                    self.xml_str = f.read()
 
             if self.error_pat.search(self.xml_str):
                 continue

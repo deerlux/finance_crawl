@@ -20,8 +20,9 @@ class FinanceDB:
         self.Rongzi = self.Base.classes.rongzi
         self.Rongzi_mingxi = self.Base.classes.rongzi_mingxi
         self.Stock_info = self.Base.classes.stock_info
-        self.Holiday_type = self.Base.classes.holiday_type
+
         self.Holidays = self.Base.classes.holidays
+        self.Holiday_type = self.Base.classes.holiday_type
 
         self.query = self.session.query
         self.add = self.session.add
