@@ -49,8 +49,6 @@ create table if not exists RONGZI_MINGXI (
     rongquan_changhuan float,
     UNIQUE (trading_day, stock_code));
 
-alter table RONGZI_MINGXI add unique (trading_day, stock_code);
-
 create index rongzi_trading_day_idx on rongzi(trading_day);
 create index rongzi_mingxi_trading_day_idx on rongzi_mingxi(trading_day);
 
@@ -60,8 +58,7 @@ create table if not exists holiday_type(
 );
 
 create table if not exists holidays(
-    holiday_id bigserial primary key,
-    holiday date unique,
+    holiday date primary key,
     type_id int references holiday_type(type_id));
 
 
