@@ -21,8 +21,8 @@ NEWSPIDER_MODULE = 'szrongzi.spiders'
 START_DATE = date(2015,4,20)
 END_DATE = date(2015,4,20)
 
-LOG_LEVEL = log.WARNING
-LOG_FILE = "rongzi_crawl.log"
+LOG_LEVEL = log.INFO
+#LOG_FILE = "rongzi_crawl.log"
 
 ITEM_PIPELINES = {"szrongzi.pipelines.ShrongziPipeline":200,
     "szrongzi.pipelines.ShrongziMingxiPipeline":300}

@@ -10,6 +10,8 @@ from scrapy import log
 from szrongzi.items import ShrongziItem, ShrongziMingxiItem, SzrongziItem
 from finance_crawl.FinanceDBAPI import FinanceDB
 
+from ipdb import set_trace
+
 from sqlalchemy.exc import IntegrityError
 
 class SzrongziPipeline(object):
@@ -69,6 +71,11 @@ class ShrongziMingxiPipeline(object):
         db = FinanceDB()
 
         stock_codes = [x.stock_code for x in db.query(db.Stock_info).all()]
+        
+        try:
+            temp = item['stock_code']
+        except KeyError:
+            set_trace()
         if not (item["stock_code"] in stock_codes):
             db_item = db.Stock_info(stock_code = item["stock_code"],
                             stock_name = item["stock_name"])
@@ -78,19 +85,20 @@ class ShrongziMingxiPipeline(object):
                     level = log.INFO)
             
         db_item = db.Rongzi_mingxi(trading_day = item["trading_day"],
-                        market = "sh",
+                        market = item['market'],
                         stock_code = item["stock_code"],
                         rongzi_yue = item["rongzi_yue"],
                         rongzi_mairu = item["rongzi_mairu"],
                         rongzi_changhuan = item["rongzi_changhuan"],
                         rongquan_yuliang = item["rongquan_yuliang"],
-                        rongquan_changhuan = item["rongquan_changhuan"])
+                        rongquan_changhuan = item["rongquan_changhuan"],
+                        rongquan_yue = item['rongquan_yue'])
+        db.add(db_item)
         try:
-            db.add(db_item)
             db.commit()
         except IntegrityError as e:
             db.rollback()
-            log.msg(e, log.ERROR)
+            log.msg(e, level = log.ERROR)
 
         return item
             

@@ -50,4 +50,5 @@ class ShrongziMingxiItem(scrapy.Item):
     rongquan_yuliang = scrapy.Field()
     rongquan_maichu = scrapy.Field()
     rongquan_changhuan = scrapy.Field()
+    rongquan_yue = scrapy.Field()
     stock_name = scrapy.Field()
